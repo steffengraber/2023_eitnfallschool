@@ -22,7 +22,7 @@ rule nestml_intro:
     input:
         '2023_eitnfallschool_nestmlintro.tex',
         'inm6-templates/talk/latex_official',
-        'code/pynest/figures/hello_world_nestml.pdf'
+        '../code/pynest/figures/hello_world_nestml.pdf'
 
     output:
         '2023_eitnfallschool_nestmlintro.pdf'
