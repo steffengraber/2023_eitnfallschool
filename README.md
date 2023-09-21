@@ -1,6 +1,6 @@
-# [NEST material for the EITN fall school 2023](https://eitnfallschool2023.sciencesconf.org/)
+# NEST material for the EITN fall school 2023
 
-This repository contains the NEST material for the EITN fall school in Paris 2023, specifically:
+This repository contains the NEST material for the [EITN fall school in Paris 2023](https://eitnfallschool2023.sciencesconf.org), specifically:
 
 * an [Introduction to NEST](presentations/2023_eitnfallschool_nestintro.pdf),
 * an [Introduction to NESTML](presentations/2023_eitnfallschool_nestmlintro.pdf),
