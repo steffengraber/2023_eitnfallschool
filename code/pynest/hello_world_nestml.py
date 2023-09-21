@@ -2,9 +2,10 @@ import nest                                                          # import NE
 import matplotlib.pyplot as plt                                      # for plotting
 from pynestml.frontend.pynestml_frontend import generate_nest_target # NESTML
 
-# compile nestml model
-generate_nest_target(input_path="../nestml/iaf_psc_exp_nestml.nestml",
+# compile nestml model (needs to be done only once)
+generate_nest_target(input_path="../nestml/iaf_psc_exp.nestml",
                      target_path="./nestml_target",
+                     suffix="_nestml",                     
                      logging_level='ERROR')    
 
 # install resulting NESTML module to make models available in NEST

@@ -165,13 +165,24 @@ sorting=nyt]{biblatex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\ttl{``Hello world (neuron)!''}\section{\ttl}
+\begin{frame}[t,plain,allowframebreaks]
+  \frametitle{\ttl}
+  \frametitle{\ttl: NESTML model definition}
+  \vspace*{-1ex}    
+  \lstinputlisting
+  [firstnumber=auto,name=helloworldnestml,showstringspaces=false,linerange={42-96}]
+  {../code/nestml/iaf_psc_exp.nestml}
+  %%
+  \vspace*{-2ex}{\tiny (see \texttt{iaf\_psc\_exp.nestml})}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[t,plain]  
   \frametitle{\ttl: PyNEST code}
   \onslide<1->{
     \rule{\linewidth}{0.5pt}\\[-1ex]
     %%%
     \lstinputlisting
-    [firstnumber=auto,language=Python,name=helloworldnestml,showstringspaces=false,linerange={1-15},frame=none]
+    [firstnumber=auto,language=Python,name=helloworldnestml,showstringspaces=false,linerange={1-16},frame=none]
     {../code/pynest/hello_world_nestml.py}
     %%
     \ldots\\
@@ -186,7 +197,7 @@ sorting=nyt]{biblatex}
     \vspace*{-2ex}{\tiny (see \texttt{hello\_world\_nestml.py})}\\
   }
   \onslide<2->{
-    \vspace*{-1.7cm}
+    \vspace*{-2.1cm}
     \hspace*{\fill}
     \fcolorbox{black}{white}{\parbox{0.4\linewidth}{
         \footnotesize
@@ -194,17 +205,6 @@ sorting=nyt]{biblatex}
         \includegraphics[width=\linewidth]{../code/pynest/figures/hello_world_nestml.pdf}
       }}
   }
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[t,plain,allowframebreaks]
-  \frametitle{\ttl}
-  \frametitle{\ttl: NESTML neuron model definition}
-  \vspace*{-1ex}    
-  \lstinputlisting
-  [firstnumber=auto,name=helloworldnestml,showstringspaces=false,linerange={42-96}]
-  {../code/nestml/iaf_psc_exp_nestml.nestml}
-  %%
-  \vspace*{-2ex}{\tiny (see \texttt{iaf\_psc\_exp\_nestml.nestml})}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\ttl{``Hello world (synapse)!''}\section{\ttl}

@@ -40,7 +40,7 @@ References
 
 """
 
-neuron iaf_psc_exp_nestml:
+neuron iaf_psc_exp:
 
   state:
     r integer = 0      # refratory state
