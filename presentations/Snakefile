@@ -1,0 +1,65 @@
+configfile: "config.yaml"
+TEMPLATE_REPOSITORY = config["TEMPLATE_REPOSITORY"]
+
+rule all:
+    input:
+        '2023_eitnfallschool_nestintro.pdf',
+        '2023_eitnfallschool_nestmlintro.pdf'
+        
+rule nest_intro:    
+    input:
+        '2023_eitnfallschool_nestintro.tex',
+        'inm6-templates/talk/latex_official',
+        '../code/pynest/figures/hello_world.pdf',
+        '../code/pynest/figures/balanced_random_network.pdf'        
+    output:
+        '2023_eitnfallschool_nestintro.pdf'
+    run:
+        file_root = input[0][:-4]
+        shell('export TEXINPUTS=$TEXINPUTS:inm6-templates/talk/latex_official ; pdflatex {input[0]} ; bibtex {file_root} ; pdflatex {input[0]}')
+
+rule nestml_intro:    
+    input:
+        '2023_eitnfallschool_nestmlintro.tex',
+        'inm6-templates/talk/latex_official',
+        'code/pynest/figures/hello_world_nestml.pdf'
+
+    output:
+        '2023_eitnfallschool_nestmlintro.pdf'
+    run:
+        file_root = input[0][:-4]
+        shell('export TEXINPUTS=$TEXINPUTS:inm6-templates/talk/latex_official ; pdflatex {input[0]} ; bibtex {file_root} ; pdflatex {input[0]}')
+
+rule hello_world_fig:
+    input:
+        '../code/pynest/hello_world.py'
+    output:
+        '../code/pynest/figures/hello_world.pdf'
+    run:
+        shell('cd ../code/pynest; python hello_world.py')        
+
+rule hello_world_nestml_fig:
+    input:
+        '../code/pynest/hello_world_nestml.py'
+    output:
+        '../code/pynest/figures/hello_world_nestml.pdf'
+    run:
+        shell('cd ../code/pynest; python hello_world_nestml.py')        
+
+rule balanced_random_network_fig:
+    input:
+        '../code/pynest/balanced_random_network.py'
+    output:
+        '../code/pynest/figures/balanced_random_network.pdf'
+    run:
+        shell('cd ../code/pynest; python balanced_random_network.py')        
+        
+rule clone_template:
+    output:
+        directory('inm6-templates')
+    run:
+        shell('git clone {TEMPLATE_REPOSITORY}')
+  
+rule clean:
+    run:
+        shell("rm -f *~ *.log *.aux *.bbl *.blg *.idx *.ilg *.ind *.lof *.out *.pfg *.toc *.soc *.nav *.snm *.bcf *.xml *blx.bib")

@@ -1,0 +1,67 @@
+"""
+stdp_pl - Synapse model for spike-timing dependent plasticity with power law weight dependence
+###############################################################################################
+
+Description
++++++++++++
+
+stdp_pl_synapse is a synapse with spike time dependent plasticity as defined in [1]_). 
+
+References
+++++++++++
+
+.. [1] Morrison A., Aertsen A., Diesmann M. (2007). Spike-timing-dependent plasticity in balanced random networks. Neural Computation 19(6):1437-1467
+
+"""
+
+synapse stdp_pl:
+
+  state:
+    w real = 1.    @nest::weight
+    pre_trace real = 0.
+    post_trace real = 0.
+
+  parameters:
+    the_delay ms = 1 ms  @nest::delay   # !!! cannot have a variable called "delay"
+    lambda real = .01
+    alpha real = 0.1
+    tau_plus ms = 15 ms
+    tau_minus ms = 30 ms
+    mu_plus real = 0.4
+    w_0 real = 1.0
+
+  equations:
+    # kernel pre_trace_kernel = exp(-t / tau_plus)
+    # inline pre_trace real = convolve(pre_trace_kernel, pre_spikes)    
+
+    # # all-to-all trace of postsynaptic neuron
+    # kernel post_trace_kernel = exp(-t / tau_minus)
+    # inline post_trace real = convolve(post_trace_kernel, post_spikes)
+
+    pre_trace' = -pre_trace/ tau_plus
+    post_trace' = -post_trace/ tau_minus    
+
+  input:
+    #pre_spikes nS <- spike
+    #post_spikes nS <- spike
+    pre_spikes real <- spike
+    post_spikes real <- spike
+
+  output:
+    spike
+
+  onReceive(post_spikes):
+    post_trace += 1
+    # potentiate synapse
+    w = w + lambda * w_0 * (w/w_0)**mu_plus * pre_trace
+
+  onReceive(pre_spikes):
+    pre_trace += 1
+    # depress synapse
+    w_ real = w - alpha*lambda * w * post_trace
+    # zero clipping
+    w = max(0.0,w_)  
+    
+    # deliver spike to postsynaptic partner
+    deliver_spike(w, the_delay)
+
