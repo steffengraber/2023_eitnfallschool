@@ -144,20 +144,27 @@ sorting=nyt]{biblatex}
 \begin{frame}[t,plain]
   \frametitle{\ttl}
   \begin{itemize}
-  \item domain-specific language for neuron and synapse models\\[3ex]    
-    \begin{center}
-      \includegraphics[width=0.7\linewidth]{./figures/nestml-workflow.pdf}
+  \item domain-specific language for definition of \emph{custom neuron and synapse models}
+  \item specifically tailored for NEST (SpiNNaker and \href{https://nest-gpu.readthedocs.io}{NEST GPU} support in progress)
+  \item NESTML toolchain includes
+    \begin{itemize}
+    \item syntax validation
+    \item system analysis and automatized selection of appropriate solving method (using \href{https://ode-toolbox.readthedocs.io}{ODE-toolbox})
+    \item code generation (C++ for NEST)
+    \end{itemize}
+  \item see \href{https://nestml.readthedocs.io/en/latest/nestml_language/nestml_language_concepts.html}{NESTML language concepts}\\[2ex]
+    \begin{center}      
+      \includegraphics[width=0.5\linewidth]{./figures/nestml-workflow.pdf}
     \end{center}
-    \vspace*{4ex}
+    \vspace*{2ex}
   \item code: \url{https://github.com/nest/nestml}
   \item docs: \url{https://nestml.readthedocs.io}
   \item[] \vspace*{-5ex}\hfill\includegraphics[width=0.2\linewidth]{./figures/nestml-logo.pdf}
   \end{itemize}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\ttl{``Hello world!''}\section{\ttl}
+\def\ttl{``Hello world (neuron)!''}\section{\ttl}
 \begin{frame}[t,plain]  
   \frametitle{\ttl: PyNEST code}
   \onslide<1->{
@@ -188,10 +195,10 @@ sorting=nyt]{biblatex}
       }}
   }
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[t,plain,allowframebreaks]
   \frametitle{\ttl}
-  \frametitle{\ttl: NESTML code}
+  \frametitle{\ttl: NESTML neuron model definition}
   \vspace*{-1ex}    
   \lstinputlisting
   [firstnumber=auto,name=helloworldnestml,showstringspaces=false,linerange={42-96}]
@@ -200,6 +207,12 @@ sorting=nyt]{biblatex}
   \vspace*{-2ex}{\tiny (see \texttt{iaf\_psc\_exp\_nestml.nestml})}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\ttl{``Hello world (synapse)!''}\section{\ttl}
+\begin{frame}[t,plain]
+  \frametitle{\ttl}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[t,plain,allowframebreaks]
   \begin{center}
