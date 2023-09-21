@@ -22,7 +22,8 @@ rule nestml_intro:
     input:
         '2023_eitnfallschool_nestmlintro.tex',
         'inm6-templates/talk/latex_official',
-        '../code/pynest/figures/hello_world_nestml.pdf'
+        '../code/pynest/figures/hello_world_nestml.pdf',
+        '../code/pynest/figures/hello_world_plastic_nestml.pdf'        
 
     output:
         '2023_eitnfallschool_nestmlintro.pdf'
@@ -40,12 +41,23 @@ rule hello_world_fig:
 
 rule hello_world_nestml_fig:
     input:
-        '../code/pynest/hello_world_nestml.py'
+        '../code/pynest/hello_world_nestml.py',
+        '../code/nestml/iaf_psc_exp.nestml'        
     output:
         '../code/pynest/figures/hello_world_nestml.pdf'
     run:
         shell('cd ../code/pynest; python hello_world_nestml.py')        
 
+rule hello_world_plastic_nestml_fig:
+    input:
+        '../code/pynest/hello_world_plastic_nestml.py',
+        '../code/nestml/iaf_psc_exp.nestml',
+        '../code/nestml/stdp_pl_synapse.nestml'
+    output:
+        '../code/pynest/figures/hello_world_plastic_nestml.pdf'
+    run:
+        shell('cd ../code/pynest; python hello_world_plastic_nestml.py')        
+        
 rule balanced_random_network_fig:
     input:
         '../code/pynest/balanced_random_network.py'

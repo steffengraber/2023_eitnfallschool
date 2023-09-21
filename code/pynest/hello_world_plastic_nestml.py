@@ -4,15 +4,15 @@ from pynestml.frontend.pynestml_frontend import generate_nest_target # NESTML
 import numpy
 
 # compile nestml model (needs to be done only once)
-# generate_nest_target(input_path=["../nestml/iaf_psc_exp.nestml",
-#                                  "../nestml/stdp_pl_synapse.nestml"],
-#                      target_path="./nestml_target",
-#                      logging_level='ERROR',
-#                      suffix="_nestml",
-#                      codegen_opts = {"neuron_synapse_pairs": [{"neuron": "iaf_psc_exp",
-#                                                                "synapse": "stdp_pl",
-#                                                                "post_ports": ["post_spikes"]}]}
-# )    
+generate_nest_target(input_path=["../nestml/iaf_psc_exp.nestml",
+                                 "../nestml/stdp_pl_synapse.nestml"],
+                     target_path="./nestml_target",
+                     logging_level='ERROR',
+                     suffix="_nestml",
+                     codegen_opts = {"neuron_synapse_pairs": [{"neuron": "iaf_psc_exp",
+                                                               "synapse": "stdp_pl",
+                                                               "post_ports": ["post_spikes"]}]}
+)    
 
 # install resulting NESTML module to make models available in NEST
 nest.Install('nestmlmodule') 
@@ -21,60 +21,59 @@ nest.Install('nestmlmodule')
 neuron_model_name = 'iaf_psc_exp_nestml__with_stdp_pl_nestml'
 synapse_model_name = 'stdp_pl_nestml__with_iaf_psc_exp_nestml'
 
-nest.ResetKernel() # reset simulation kernel 
+nest.ResetKernel() # reset simulation kernel
 
-# list of pre and postsynaptic psike times
-pre_spike_times = numpy.arange(200.,1000.,100.)
-post_spike_times = pre_spike_times + 50.
-pre_spike_times = [10.] + list(pre_spike_times) + [1100., 1150.]
+# presynaptic  spike times
+pre_spike_times =  [100. , 300., 400., 500., 600., 700., 800., 900., 1000., 1200.]
+# times of postsynaptic stimulation
+post_spike_times = [       330., 430., 530., 630., 730., 830., 930., 1030.]
 
-# create a spike generator emulating the presynaptic neuron
-pre_neuron=nest.Create('spike_generator', params={'spike_times': pre_spike_times}) 
+pre_neuron=nest.Create('parrot_neuron') # create presynaptic neuron
+post_neuron=nest.Create(neuron_model_name,2) # create postsynaptic neuron
 
-post_neuron=nest.Create(neuron_model_name,2) # create postsyptic neuron
-
-# connect the pre neuron and the post neuron with the STDP synapse
-nest.CopyModel(synapse_model_name,"excitatory", {
-    "weight": 100.0,      ## initial synaptic weight (pA)
-    "delay": 1.0,         ## spike transmission delay (ms)
-    'lambda': 0.1,        ## (dimensionless) learning rate
-    'alpha': 0.1,         ##
-    'tau_plus': 15.0,     ## (ms)
-    'tau_minus': 100.0,    ## (ms)
-    'mu_plus': 0.4,       ##
+# configure STDP synapse
+nest.CopyModel(synapse_model_name,"plastic_synapse", {
+    "weight":      100.0,   # initial synaptic weight (pA)
+    "delay":         0.1,   # spike transmission delay (ms)
+    'lambda':       10.0,   # (dimensionless) learning rate for causal updates
+    'tau_tr_pre':  100.0,   # time constant of presynaptic trace (ms)
+    'tau_tr_post': 100.0,   # time constant of postsynaptic trace (ms)
 })
-nest.Connect(pre_neuron, post_neuron, syn_spec="excitatory")
 
-# create a second spike generator to make the postsynaptic neuron fire at specific times
-spikegenerator=nest.Create('spike_generator', params={'spike_times': post_spike_times}) 
+# connect pre neuron and post neuron with the STDP synapse
+nest.Connect(pre_neuron, post_neuron, syn_spec="plastic_synapse")
 
-# connect this spikegenerator with the neuron (with a static synapse with high weight)
-nest.Connect(spikegenerator, post_neuron, syn_spec = {"weight": 2000.})
+# spike generator making presynaptic neuron fire at specified times
+pre_sg=nest.Create('spike_generator', params={'spike_times': pre_spike_times})
+
+# spike generator making presynaptic neuron fire at specified times
+post_sg=nest.Create('spike_generator', params={'spike_times': post_spike_times})
+
+# connect spike generators to neurons
+nest.Connect(pre_sg, pre_neuron, syn_spec = {"delay": 0.1})
+nest.Connect(post_sg, post_neuron, syn_spec = {"delay": 0.1, "weight": 1700.})
 
 # create multimeter and set it up to record the membrane potential V_m
-multimeter=nest.Create('multimeter',
-                       {'record_from': ['V_m','post_trace__for_stdp_pl_nestml']})
+multimeter=nest.Create('multimeter',{'record_from': ['V_m'], 'interval': 0.1})
 
 nest.Connect(multimeter, post_neuron)  # connect multimeter to the neuron
 
-nest.Simulate(1200.) # run simulation
+nest.Simulate(1400.) # run simulation
 
 # read out recording time and voltage from voltmeter
 times=multimeter.get('events')['times']
 voltage=multimeter.get('events')['V_m']
-post_trace=multimeter.get('events')['post_trace__for_stdp_pl_nestml']
 
 # plot results
 plt.figure(1)
 plt.clf()
-plt.subplot(211)
-plt.plot(times,voltage,'k-',lw=2)
+plt.plot(pre_spike_times,len(pre_spike_times)*[17.]  ,'b|',ms=12,label='pre spikes')
+plt.plot(post_spike_times,len(post_spike_times)*[16.],'r|',ms=12,label='post stimulus')
+plt.plot(times,voltage,'k-',lw=2,label='membrane potential')
+plt.hlines(15,0,1600,color='0.6',lw=1,ls='--',label='threshold')
+plt.legend(loc=6,framealpha=1.)
 plt.xlabel('time (ms)')
 plt.ylabel('membrane potential (mV)')
-
-plt.subplot(212)
-plt.plot(times,post_trace,'k-',lw=2)
-plt.xlabel('time (ms)')
-plt.ylabel('post trace ')
-
+plt.xlim(0,1400)
+plt.ylim(0,18)
 plt.savefig('./figures/hello_world_plastic_nestml.pdf')

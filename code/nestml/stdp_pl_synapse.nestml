@@ -17,22 +17,22 @@ References
 synapse stdp_pl:
 
   state:
-    w          real = 1.    @nest::weight  # synaptic weight
-    pre_trace  real = 0.                   # presynaptic trace  
-    post_trace real = 0.                   # postsynaptic trace
+    w           real = 1.    @nest::weight  # synaptic weight
+    pre_trace   real = 0.                   # presynaptic trace  
+    post_trace  real = 0.                   # postsynaptic trace
 
   parameters:
-    the_delay ms   = 1 ms  @nest::delay   # !!! cannot have a variable called "delay"
-    lambda    real = .01
-    alpha     real = 0.1
-    tau_plus  ms   = 15 ms
-    tau_minus ms   = 30 ms
-    mu_plus   real = 0.4
-    w_0       real = 1.0
+    the_delay   ms   =  1    ms  @nest::delay 
+    lambda      real =  0.01
+    alpha       real =  0.1
+    tau_tr_pre  ms   = 15    ms
+    tau_tr_post ms   = 30    ms
+    mu_plus     real =  0.4
+    w_0         real =  1.0
 
   equations:
-    pre_trace'  = - pre_trace / tau_plus
-    post_trace' = - post_trace / tau_minus    
+    pre_trace'  = - pre_trace / tau_tr_pre
+    post_trace' = - post_trace / tau_tr_post    
 
   input:
     pre_spikes  <- spike
@@ -43,13 +43,16 @@ synapse stdp_pl:
 
   onReceive(post_spikes):
     post_trace += 1
-    # potentiate synapse
+    
+    # update for causal firing (potentiation)
     w = w + lambda * w_0 * (w/w_0)**mu_plus * pre_trace
 
   onReceive(pre_spikes):
     pre_trace += 1
-    # depress synapse
+    
+    # update for acausal firing (depression)
     w_ real = w - alpha*lambda * w * post_trace
+    
     # zero clipping
     w = max(0.0,w_)  
     

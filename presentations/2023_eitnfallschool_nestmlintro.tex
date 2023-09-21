@@ -164,10 +164,9 @@ sorting=nyt]{biblatex}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\ttl{``Hello world (neuron)!''}\section{\ttl}
+\def\ttl{``Hello world!''}\section{\ttl}
 \begin{frame}[t,plain,allowframebreaks]
-  \frametitle{\ttl}
-  \frametitle{\ttl: NESTML model definition}
+  \frametitle{\ttl: NESTML neuron model definition}
   \vspace*{-1ex}    
   \lstinputlisting
   [firstnumber=auto,name=helloworldnestml,showstringspaces=false,linerange={42-96}]
@@ -207,10 +206,56 @@ sorting=nyt]{biblatex}
   }
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\ttl{``Hello world (synapse)!''}\section{\ttl}
-\begin{frame}[t,plain]
-  \frametitle{\ttl}
+\def\ttl{Example}\section{\ttl}
+\begin{frame}[t,plain,allowframebreaks]
+  \frametitle{\ttl: NESTML synapse model definition}
+  \vspace*{-1ex}    
+  \lstinputlisting
+  [firstnumber=auto,name=helloworldnestml,showstringspaces=false,linerange={17-62}]
+  {../code/nestml/stdp_pl_synapse.nestml}
+  %%
+  \vspace*{-2ex}{\tiny (see \texttt{stdp\_pl\_synapse.nestml})}
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[t,plain,allowframebreaks]  
+  \frametitle{\ttl: PyNEST code}
+  \onslide<1->{
+    \rule{\linewidth}{0.5pt}\\[-1ex]
+    %%%
+    \lstinputlisting
+    [firstnumber=auto,language=Python,name=helloworldnestml,showstringspaces=false,linerange={6-22},frame=none]
+    {../code/pynest/hello_world_plastic_nestml.py}
+    %%
+    \vspace*{-1ex}\ldots\\[-1ex]
+    %%
+    \lstinputlisting
+    [firstnumber=40,language=Python,name=helloworldnestml,showstringspaces=false,linerange={31-32},frame=none]
+    {../code/pynest/hello_world_plastic_nestml.py}
+    %%
+    \vspace*{-1ex}\ldots\\[-1ex]
+    %%
+    \lstinputlisting
+    [firstnumber=40,language=Python,name=helloworldnestml,showstringspaces=false,linerange={34-44},frame=none]
+    {../code/pynest/hello_world_plastic_nestml.py}
+    %%
+    \vspace*{-1ex}\ldots\\
+    %%
+    %%%
+    \rule{\linewidth}{0.5pt}
+    %% 
+    \vspace*{-2ex}{\tiny (see \texttt{hello\_world\_plastic\_nestml.py})}\\
+  }
+  \onslide<1->{
+    \vspace*{-0.8cm}
+    \hspace*{\fill}
+    \fcolorbox{black}{white}{\parbox{0.52\linewidth}{
+        \footnotesize
+        \texttt{hello\_world\_nestml.pdf}:\\
+        \includegraphics[width=\linewidth]{../code/pynest/figures/hello_world_plastic_nestml.pdf}
+      }}
+  }
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -223,14 +268,14 @@ sorting=nyt]{biblatex}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% references
-\setbeamertemplate{bibliography item}{}  %% remove document icon
-\def\ttl{References}\section*{\ttl}
-\begin{frame}[t,plain,allowframebreaks]  
-  \frametitle{\ttl}
-  \bibitemsep1ex
-  \renewcommand{\bibfont}{\normalfont\small}
-  \printbibliography
-\end{frame}
+% \setbeamertemplate{bibliography item}{}  %% remove document icon
+% \def\ttl{References}\section*{\ttl}
+% \begin{frame}[t,plain,allowframebreaks]  
+%   \frametitle{\ttl}
+%   \bibitemsep1ex
+%   \renewcommand{\bibfont}{\normalfont\small}
+%   \printbibliography
+% \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
