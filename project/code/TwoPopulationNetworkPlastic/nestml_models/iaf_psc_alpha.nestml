@@ -57,40 +57,46 @@ See also
 ++++++++
 
 iaf_psc_delta, iaf_psc_exp, iaf_cond_alpha
+
 """
 
 neuron iaf_psc_alpha:
 
   state:
-    r integer = 0                 # counts number of tick during the refractory period
-    V_m mV = -70 mV
+    r   integer = 0 
+    V_m mV      = -70 mV
 
   equations:
-    kernel I_kernel_inh = (e / tau_syn_inh) * t * exp(-t / tau_syn_inh)
-    kernel I_kernel_exc = (e / tau_syn_exc) * t * exp(-t / tau_syn_exc)
-    inline I pA = convolve(I_kernel_exc, exc_spikes) - convolve(I_kernel_inh, inh_spikes) + I_e + I_stim
-    V_m' = - (V_m - E_L) / tau_m + I / C_m    
+    #kernel I_kernel_exc = exp(-t / tau_syn_exc)
+    #kernel I_kernel_inh = exp(-t / tau_syn_inh)
+    
+    kernel I_kernel_exc = t / tau_syn_exc * e * exp(-t / tau_syn_exc)
+    kernel I_kernel_inh = t / tau_syn_inh * e * exp(-t / tau_syn_inh)
+
+    inline I_syn pA = convolve(I_kernel_exc, exc_spikes) * pA - convolve(I_kernel_inh, inh_spikes) * pA
+    V_m' = - (V_m - E_L) / tau_m + (I_syn + I_e + I_stim) / C_m    
 
   parameters:
-    C_m     pF     = 250 pF       # membrane capacitance
-    tau_m   ms     = 10 ms        # membrane time constant
-    tau_syn_inh ms = 2 ms         # time constant of excitatory synapses
-    tau_syn_exc ms = 2 ms         # time constant of inhibitory synapses
-    t_ref   ms     = 2 ms         # refractory period
-    E_L     mV     = -70 mV       # resting potential
-    V_reset mV     = -70 mV       # reset potential
-    V_th    mV     = -55 mV       # spike threshold
-    I_e pA         = 0 pA             # constant external input current
+    C_m         pF = 250 pF      # membrane capacitance
+    tau_m       ms =  10 ms      # membrane time constant
+    tau_syn_inh ms =   2 ms      # time constant of excitatory synapses
+    tau_syn_exc ms =   2 ms      # time constant of inhibitory synapses
+    t_ref       ms =   2 ms      # refractory period
+    E_L         mV = -70 mV      # resting potential
+    V_reset     mV = -70 mV      # reset potential
+    V_th        mV = -55 mV      # spike threshold
+    I_e         pA =   0 pA      # constant external input current
 
   internals:
     RefractoryCounts integer = steps(t_ref)    # refractory time in steps
 
   input:
-    exc_spikes pA <- excitatory spike
-    inh_spikes pA <- inhibitory spike
-    I_stim pA <- continuous
+    exc_spikes    <- excitatory spike
+    inh_spikes    <- inhibitory spike
+    I_stim     pA <- continuous
 
-  output: spike
+  output:
+    spike
 
   update:
     integrate_odes()

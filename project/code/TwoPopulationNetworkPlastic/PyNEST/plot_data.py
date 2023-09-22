@@ -116,8 +116,8 @@ def plot_weight_distributions(whist_presim, whist_postsim, weights, path = './')
     plt.savefig(path + '/TwoPopulationNetworkPlastic_weight_distributions.png')
 
 #################################################
-def generate_reference_figures():
-    '''Generate and store set of reference data'''
+def plot_data():
+    '''Plot spike and connectivity data'''
 
     ## raster plot
     parameters = model.get_default_parameters()
@@ -133,13 +133,13 @@ def generate_reference_figures():
     ## create subfolder for figures (if necessary)
     os.system('mkdir -p ' + model_instance.pars['data_path'])
     
-    ## load spikes from reference data
-    spikes = model.load_spike_data('../reference_data/' + model_instance.pars['data_path'], "spikes-%d" % (np.array(model_instance.nodes['spike_recorder'])[0]))    
+    ## load spikes
+    spikes = model.load_spike_data(model_instance.pars['data_path'], "spikes-%d" % (np.array(model_instance.nodes['spike_recorder'])[0]))    
     plot_spikes(spikes, model_instance.nodes, model_instance.pars, model_instance.pars['data_path'])
 
-    ## load connectivity from reference data 
-    connectivity_presim = model.load_connectivity_data('../reference_data/'+ model_instance.pars['data_path'],'connectivity_presim')
-    connectivity_postsim = model.load_connectivity_data('../reference_data/' + model_instance.pars['data_path'],'connectivity_postsim')
+    ## load connectivity
+    connectivity_presim = model.load_connectivity_data(model_instance.pars['data_path'],'connectivity_presim')
+    connectivity_postsim = model.load_connectivity_data(model_instance.pars['data_path'],'connectivity_postsim')
 
     ## create connectivity matrices before and after simulation for a subset of neurons
     subset_size = 100
@@ -163,4 +163,4 @@ def generate_reference_figures():
             
 #################################################
 
-generate_reference_figures()
+plot_data()

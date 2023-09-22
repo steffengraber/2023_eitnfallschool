@@ -105,11 +105,7 @@ class Model:
                 'tau_minus': self.pars['stdp_tau_minus'],
                 'V_m': self.pars['V_init_min'],                
             }
-        #     nest.Install('iaf_psc_alpha__with_stdp_pl_nestmlmodule') ## include nestml models
-            
-        # elif self.pars['neuron_model'] == 'ignore_and_fire_nestml':            
-        #     nest.Install('ignore_and_fire__with_stdp_pl_nestmlmodule') ## include nestml models            
-            
+                        
     ##############################################        
     def __derived_parameters(self,parameters):
         """
@@ -168,18 +164,10 @@ class Model:
         if self.pars['neuron_model'] == 'iaf_psc_alpha_nest':
             random_vm = nest.random.uniform(self.pars['V_init_min'],self.pars['V_init_max'])                    
             nest.GetLocalNodeCollection(pop_all).V_m = random_vm                    
+
         elif self.pars['neuron_model'] == 'iaf_psc_alpha_nestml':             
             random_vm = np.random.uniform(low = self.pars['V_init_min'],high = self.pars['V_init_max'],size=self.pars['N'])
-            pop_all.V_m = random_vm                                                                                            
-        elif self.pars['neuron_model'] == 'ignore_and_fire_nestml':
-            pop_all = nest.Create('ignore_and_fire_nestml__with_stdp_pl_nestml', self.pars['N']) # overall population
-            pop_all.firing_rate = np.random.uniform(low=self.pars['ignore_and_fire_pars']['firing_rate_dist'][0],high=self.pars['ignore_and_fire_pars']['firing_rate_dist'][1],size=self.pars['N'])
-            pop_all.phase = np.random.uniform(low=self.pars['ignore_and_fire_pars']['phase_dist'][0],high=self.pars['ignore_and_fire_pars']['phase_dist'][1],size=self.pars['N'])
-
-            ## better, but not working yet:
-            #pop_all.firing_rate = nest.random.uniform(min=firing_rate_dist[0], max=firing_rate_dist[1])
-            #pop.phase = nest.random.uniform(min=firing_rate_dist[0], max=firing_rate_dist[1])        
-                
+            pop_all.V_m = random_vm                                                                                                            
         pop_E = pop_all[:self.pars['N_E']]    # population of exitatory neurons
         pop_I = pop_all[self.pars['N_E']:]    # population of inhibitory neurons
             
@@ -212,20 +200,6 @@ class Model:
                 'lambda': self.pars['stdp_lambda'],
                 'mu': self.pars['stdp_mu_plus'],
                 'tau_plus': self.pars['stdp_tau_plus'],
-            })
-
-        elif self.pars['neuron_model'] == 'ignore_and_fire_nestml':
-            nest.CopyModel('stdp_pl_nestml__with_ignore_and_fire_nestml',"excitatory_plastic", {
-                #'weight_recorder': weight_recorder[0],
-                'weight': self.pars['I_E'],
-                'w_0': self.pars['stdp_w_0'],                
-                'lambda': self.pars['stdp_lambda'],
-                'alpha': self.pars['stdp_alpha'],
-                'tau_plus': self.pars['stdp_tau_plus'],
-                'tau_minus': self.pars['stdp_tau_minus'],
-                'the_delay': self.pars['delay'],
-                'mu_plus': self.pars['stdp_mu_plus'],
-                'receptor_type': 0
             })
 
         elif self.pars['neuron_model'] == 'iaf_psc_alpha_nestml': 
@@ -422,11 +396,7 @@ def install_nestml_module(neuron_model):
     if neuron_model == 'iaf_psc_alpha_nest':
         pass
     elif neuron_model == 'iaf_psc_alpha_nestml':
-        nest.Install('iaf_psc_alpha__with_stdp_pl_nestmlmodule') ## include nestml models
-    elif neuron_model == 'ignore_and_fire_nestml':            
-        nest.Install('ignore_and_fire__with_stdp_pl_nestmlmodule') ## include nestml models            
-    #print(nest.Models())
-    #print(nest.GetDefaults('iaf_psc_alpha_nestml__with_stdp_pl_nestml'))
+        nest.Install('nestmlmodule') ## include nestml models
     return
 
 ##############################################

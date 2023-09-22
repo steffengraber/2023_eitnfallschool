@@ -17,7 +17,6 @@ pars['allow_multapses'] = True
 ## note: to build the NESTML models, run build_nestml_models.py first
 pars['neuron_model'] = 'iaf_psc_alpha_nest'      ## NEST version of iaf_psc_alpha
 #pars['neuron_model'] = 'iaf_psc_alpha_nestml'    ## NESTML version of iaf_psc_alpha
-#pars['neuron_model'] = 'ignore_and_fire_nestml'  ## NESTML version of ignore_and_fire
 
 pars['E_L'] = 0.0      # resting membrane potential(mV)
 pars['C_m'] = 250.0    # membrane capacity (pF)
@@ -25,11 +24,6 @@ pars['tau_m'] = 20.0   # membrane time constant (ms)
 pars['t_ref'] = 2.     # duration of refractory period (ms)
 pars['theta'] = 20.0   # spike threshold(mV)
 pars['V_reset'] = 0.0  # reset potential(mV)
-
-## needed for ignore_and_fire version of the model
-pars['ignore_and_fire_pars'] = {}
-pars['ignore_and_fire_pars']['firing_rate_dist'] = [0.5,1.5]
-pars['ignore_and_fire_pars']['phase_dist'] = [0.01,1.0]
     
 # stimulus parameters
 pars['I_DC'] = 0.0     # (constant) external input current (pA)
@@ -71,4 +65,4 @@ pars['n_threads'] = 4         # number of threads for simulation
 pars['print_simulation_progress'] = True   # print network time and realtime factor
 pars['nest_verbosity'] = 'M_WARNING'       # 'M_FATAL', 'M_ERROR', 'M_WARNING', 'M_DEPRECATED', 'M_INFO', 'M_ALL'
 
-pars['data_path'] = "./" + pars['neuron_model']
+pars['data_path'] = "./data/" + pars['neuron_model']

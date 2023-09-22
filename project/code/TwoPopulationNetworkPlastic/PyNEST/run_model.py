@@ -1,12 +1,11 @@
 import sys
-sys.path.append(r'../')
 import model
 import psutil
 
 #################################################
-def generate_reference_data():
+def run_model():
     '''
-    Generate set of reference data and store on disk (spike data and model paramaters).
+    Runs the model and stores data on disk (spike data and model paramaters).
 
     Note: Data can be loaded from file using
 
@@ -50,6 +49,6 @@ def generate_reference_data():
 
 #################################################
 
-generate_reference_data()
+run_model()
 
 
