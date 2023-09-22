@@ -5,9 +5,9 @@ The model is defined in [`model.py`](model.py) and [`parameter_dicts.py`](parame
 
 ## Simulation details
 
-By default, this implementation is based on the [`iaf_psc_alpha`](https://nest-simulator.readthedocs.io/en/v3.3/models/iaf_psc_alpha.html) neuron and the [`stdp_pl_synapse_hom`](https://nest-simulator.readthedocs.io/en/v3.3/models/stdp_pl_synapse_hom.html) synapse models provided in [NEST]. Alternatively, the user may choose a [NESTML] description of the dynamics (see [`iaf_psc_alpha`](../nestml_models/iaf_psc_alpha.nestml) and [`stdp_pl_synapse`](../nestml_models/stdp_pl_synapse.nestml)) by setting `pars['neuron_model']='iaf_psc_alpha_nestml'` in  `parameter_dicts.py`. To enable usage of the NESTML models, the script [```build_nestml_models.py```](./build_nestml_models.py) needs to be executed first.
+By default, this implementation is based on the [`iaf_psc_alpha`](https://nest-simulator.readthedocs.io/en/latest/models/iaf_psc_alpha.html) neuron and the [`stdp_pl_synapse_hom`](https://nest-simulator.readthedocs.io/en/latest/models/stdp_pl_synapse_hom.html) synapse models provided in [NEST]. Alternatively, the user may choose a [NESTML] description of the dynamics (see [`iaf_psc_alpha`](../nestml_models/iaf_psc_alpha.nestml) and [`stdp_pl_synapse`](../nestml_models/stdp_pl_synapse.nestml)) by setting `pars['neuron_model']='iaf_psc_alpha_nestml'` in  `parameter_dicts.py`. To enable usage of the NESTML models, the script [```build_nestml_models.py```](./build_nestml_models.py) needs to be executed first.
 
-The network is connected according to the [`fixed_indegree`](https://nest-simulator.readthedocs.io/en/v3.3/guides/connection_management.html#fixed-indegree) connection rule in NEST.
+The network is connected according to the [`fixed_indegree`](https://nest-simulator.readthedocs.io/en/latest/synapses/connection_management.html#fixed-indegree) connection rule in NEST.
 
 The neuron dynamics is propagated in time using exact integration ([Rotter & Diesmann (1999)]) with a simulation step size $`\Delta{}t`$. The synapse dynamics is updated in an event-based manner as described by [Morrison et al. (2007)].
 
