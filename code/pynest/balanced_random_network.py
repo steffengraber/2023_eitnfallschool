@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 ## parameters
 
 ## network parameters
-N=12500                   ## number of neurons
+N=12500                  ## number of neurons
 epsilon=0.1              ## connectivity
 gamma=0.8                ## fraction of excitatory neurons and synapses
 
