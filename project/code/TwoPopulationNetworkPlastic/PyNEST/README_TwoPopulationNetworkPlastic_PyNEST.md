@@ -11,7 +11,7 @@ The network is connected according to the [`fixed_indegree`](https://nest-simula
 
 The neuron dynamics is propagated in time using exact integration ([Rotter & Diesmann (1999)]) with a simulation step size $`\Delta{}t`$. The synapse dynamics is updated in an event-based manner as described by [Morrison et al. (2007)].
 
-The model implementation runs with [NEST 3.5](https://github.com/nest/nest-simulator.git) and [NESTML 5.1.0](https://github.com/nest/nestml).
+The model implementation runs with [NEST 3.6](https://github.com/nest/nest-simulator.git) and [NESTML 5.3.0](https://github.com/nest/nestml).
 
 ## Simulation parameters
 
