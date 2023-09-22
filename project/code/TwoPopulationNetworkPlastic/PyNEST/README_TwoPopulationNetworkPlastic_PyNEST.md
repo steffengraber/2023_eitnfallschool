@@ -1,10 +1,7 @@
 # TwoPopulationNetworkPlastic - PyNEST implementation
 
 ## Simulation script
-The model is defined in [`model.py`](model.py) and [`parameter_dicts.py`](parameter_dicts.py).
-The model can be run by executing [`run_model.py`](run_model.py).
-The resulting spike and and connectivity data is stored in the `data_path` defined in [`parameter_dicts.py`](parameter_dicts.py).
-The data is plotted by executing [`plot_data.py`](plot_data.py).
+The model is defined in [`model.py`](model.py) and [`parameter_dicts.py`](parameter_dicts.py), and can be run by executing [`run_model.py`](run_model.py). The resulting spike and and connectivity data is stored in the `data_path` defined in [`parameter_dicts.py`](parameter_dicts.py). The data is plotted by executing [`plot_data.py`](plot_data.py).
 
 ## Simulation details
 
