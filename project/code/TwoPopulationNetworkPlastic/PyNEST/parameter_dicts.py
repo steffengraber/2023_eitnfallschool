@@ -13,10 +13,10 @@ pars['allow_autapses'] = False
 pars['allow_multapses'] = True
 
 # neuron parameters
+pars['neuron_model'] = 'iaf_psc_alpha_nest'    # NEST version of iaf_psc_alpha and stdp_pl_synapse
 
+#pars['neuron_model'] = 'iaf_psc_alpha_nestml' # NESTML version of iaf_psc_alpha and stdp_pl_synapse
 ## note: to build the NESTML models, run build_nestml_models.py first
-pars['neuron_model'] = 'iaf_psc_alpha_nest'      ## NEST version of iaf_psc_alpha
-#pars['neuron_model'] = 'iaf_psc_alpha_nestml'    ## NESTML version of iaf_psc_alpha
 
 pars['E_L'] = 0.0      # resting membrane potential(mV)
 pars['C_m'] = 250.0    # membrane capacity (pF)
@@ -35,7 +35,11 @@ pars['g'] = 10.0       # relative IPSP amplitude (JI=-g*JE)
 pars['delay'] = 1.5    # spike transmission delay (ms)
 pars['tau_s'] = 2.0    # synaptic time constant (ms)
 
-pars['stdp_alpha'] = 0.1         # relative magnitude of weight update for acausal firing
+pars['stdp_alpha'] = 0.1   # relative magnitude of weight update for acausal firing
+
+## slightly reducing alpha leads to an unstable dynamics:
+# pars['stdp_alpha'] = 0.05  # relative magnitude of weight update for acausal firing
+
 pars['stdp_lambda'] = 20.        # magnitude of weight update for causal firing
 pars['stdp_mu_plus'] = 0.4       # weight dependence exponent for causal firing
 pars['stdp_tau_plus'] = 15.0     # time constant of weight update for causal firing (ms)

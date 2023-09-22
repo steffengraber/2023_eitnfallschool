@@ -13,6 +13,7 @@ This repository contains the NEST material for the [EITN fall school in Paris 20
   - [Example with NESTML neuron and synapse model](code/pynest/hello_world_plastic_nestml.py)
   - [NESTML neuron model: iaf_psc_exp](code/nestml/iaf_psc_exp.nestml)
   - [NESTML synapse model: stdp_pl_synapse](code/nestml/stdp_pl_synapse.nestml)
+  - [Balanced random network with plastic synapses](project/code/TwoPopulationNetworkPlastic/README_TwoPopulationNetworkPlastic.md)
 
 ## Accessing this material
 To obtain a local copy of this material on your machine, open a terminal and execute
