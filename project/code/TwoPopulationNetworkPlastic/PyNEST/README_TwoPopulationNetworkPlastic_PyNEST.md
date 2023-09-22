@@ -29,7 +29,7 @@ The model implementation runs with [NEST 3.6](https://github.com/nest/nest-simul
 
 [Morrison et al. (2007)]: #Morrison07_1437
 <a name="Morrison07_1437"></a>
-* [Morrison et al. (2007). Spike-timing dependent plasticity in balanced random networks. Neural Computation 19:1437-1467](10.1162/neco.2007.19.6.1437)
+* [Morrison et al. (2007). Spike-timing dependent plasticity in balanced random networks. Neural Computation 19:1437-1467](https://doi.org/10.1162/neco.2007.19.6.1437)
 
 [Rotter & Diesmann (1999)]: #Rotter99_381
 <a name="Rotter99_381"></a>
