@@ -76,7 +76,7 @@ synapse stdp:
         w = w_sign * min(w_, Wmax)
 	
     onReceive(pre_spikes):
-    	println("sign of synaptic weight = {w_sign}")
+    	#println("sign of synaptic weight = {w_sign}")
 	
         pre_trace += 1
 
