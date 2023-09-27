@@ -1,0 +1,88 @@
+"""
+stdp - Synapse model for spike-timing dependent plasticity
+#########################################################
+
+Description
++++++++++++
+
+stdp_synapse is a synapse with spike-timing dependent plasticity (as defined in [1]_). Here the weight dependence exponent can be set separately for potentiation and depression. Examples:
+
+=================== ==== =============================
+Multiplicative STDP [2]_ mu_plus = mu_minus = 1
+Additive STDP       [3]_ mu_plus = mu_minus = 0
+Guetig STDP         [1]_ mu_plus, mu_minus in [0, 1]
+Van Rossum STDP     [4]_ mu_plus = 0 mu_minus = 1
+=================== ==== =============================
+
+Note: For inibitory synapses, the (initial) weight can be set to a negative value. The parameters Wmin and Wmax denote the minimimum and maximum of the *absolute value* of the synaptic weight. Hence, they have to be positive for both excitatory and inhibitory synapses.
+
+
+References
+++++++++++
+
+.. [1] Guetig et al. (2003) Learning Input Correlations through Nonlinear
+       Temporally Asymmetric Hebbian Plasticity. Journal of Neuroscience
+
+.. [2] Rubin, J., Lee, D. and Sompolinsky, H. (2001). Equilibrium
+       properties of temporally asymmetric Hebbian plasticity, PRL
+       86,364-367
+
+.. [3] Song, S., Miller, K. D. and Abbott, L. F. (2000). Competitive
+       Hebbian learning through spike-timing-dependent synaptic
+       plasticity,Nature Neuroscience 3:9,919--926
+
+.. [4] van Rossum, M. C. W., Bi, G-Q and Turrigiano, G. G. (2000).
+       Stable Hebbian learning from spike timing-dependent
+       plasticity, Journal of Neuroscience, 20:23,8812--8821
+"""
+synapse stdp:
+    state:
+        w           real = 1.    @nest::weight   # synaptic weight  (pA; >0 for excitatory and <0 for inhibitory synapses)
+        pre_trace   real = 0.                    # presynaptic trace 
+        post_trace  real = 0.                    # postsynaptic trace 
+
+    parameters:
+        d           ms   =  1 ms  @nest::delay   # spike transmission delay (ms)
+        lambda      real =  0.01  # (dimensionless) learning rate for causal updates
+        alpha       real = 1      # relative learning rate for acausal firing
+        tau_tr_pre  ms   = 20 ms  # time constant of presynaptic trace (ms)
+        tau_tr_post ms   = 20 ms  # time constant of postsynaptic trace (ms)
+
+        mu_plus     real = 1      # weight dependence exponent for causal updates
+        mu_minus    real = 1      # weight dependence exponent for acausal updates
+        Wmax        real = 1.     # maximum absolute value of synaptic weight (pA)
+        Wmin        real = 0.     # minimum absolute value of synaptic weight (pA)
+
+    equations:
+        pre_trace'  = -pre_trace / tau_tr_pre
+        post_trace' = -post_trace / tau_tr_post
+
+    internals:
+        #w_sign real = w/abs(w)               # sign of synaptic weight
+        w_sign real = w/pow(pow(w,2),0.5)     # sign of synaptic weight
+	
+    input:
+        pre_spikes <- spike
+        post_spikes <- spike
+
+    output:
+        spike
+
+    onReceive(post_spikes):
+        post_trace += 1
+
+        # potentiate synapse
+        w_ real = Wmax * (abs(w) / Wmax  + (lambda * ( 1. - ( abs(w) / Wmax ) )**mu_plus * pre_trace ))
+        w = w_sign * min(w_, Wmax)
+	
+    onReceive(pre_spikes):
+    	println("sign of synaptic weight = {w_sign}")
+	
+        pre_trace += 1
+
+        # depress synapse
+        w_ real = Wmax * (abs(w) / Wmax  - ( alpha * lambda * ( abs(w) / Wmax )**mu_minus * post_trace))
+        w = w_sign * max(Wmin, w_)
+
+        # deliver spike to postsynaptic partner
+        deliver_spike(w, d)

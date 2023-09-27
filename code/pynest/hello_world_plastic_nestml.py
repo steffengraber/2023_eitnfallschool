@@ -28,7 +28,7 @@ pre_spike_times =  [100. , 300., 400., 500., 600., 700., 800., 900., 1000., 1200
 post_spike_times = [       330., 430., 530., 630., 730., 830., 930., 1030.]
 
 pre_neuron=nest.Create('parrot_neuron') # create presynaptic neuron
-post_neuron=nest.Create(neuron_model_name,2) # create postsynaptic neuron
+post_neuron=nest.Create(neuron_model_name) # create postsynaptic neuron
 
 # configure STDP synapse
 nest.CopyModel(synapse_model_name,"plastic_synapse", {

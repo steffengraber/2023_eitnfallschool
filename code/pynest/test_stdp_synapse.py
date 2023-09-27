@@ -5,23 +5,23 @@ import numpy
 
 def compile_nestml_code():
     generate_nest_target(input_path=["../nestml/iaf_psc_exp.nestml",
-                                     "../nestml/stdp_pl_synapse.nestml"],
+                                     "../nestml/stdp_synapse.nestml"],
                          target_path="./nestml_target",
                          logging_level='ERROR',
                          suffix="_nestml",
                          codegen_opts = {"neuron_synapse_pairs": [{"neuron": "iaf_psc_exp",
-                                                                   "synapse": "stdp_pl",
+                                                                   "synapse": "stdp",
                                                                    "post_ports": ["post_spikes"]}]}
     )    
 
-#compile_nestml_code()
+compile_nestml_code()
 
 # install resulting NESTML module to make models available in NEST
 nest.Install('nestmlmodule') 
 
 # after this, the following two models are available in NEST
-neuron_model_name = 'iaf_psc_exp_nestml__with_stdp_pl_nestml'
-synapse_model_name = 'stdp_pl_nestml__with_iaf_psc_exp_nestml'
+neuron_model_name = 'iaf_psc_exp_nestml__with_stdp_nestml'
+synapse_model_name = 'stdp_nestml__with_iaf_psc_exp_nestml'
 
 nest.ResetKernel() # reset simulation kernel
 
@@ -35,14 +35,16 @@ post_neuron=nest.Create(neuron_model_name) # create postsynaptic neuron
 
 # configure STDP synapse
 nest.CopyModel(synapse_model_name,"plastic_synapse", {
-    "weight":     -100.0,   # initial synaptic weight (pA)
-    "w_0":          -1.0,   # reference weight (pA)
+    "weight":     -100.0,   # initial synaptic weight (pA; >0 for excitatory and <0 for inhibitory synapses)
     "delay":         0.1,   # spike transmission delay (ms)
-    'lambda':       10.0,   # (dimensionless) learning rate for causal updates
-    'alpha':         0.1,   # relative learning rate for acausal firing
-    'tau_tr_pre':  100.0,   # time constant of presynaptic trace (ms)
-    'tau_tr_post': 100.0,   # time constant of postsynaptic trace (ms)
-    'mu_plus':       0.4,   # weight dependence exponent for causal updates
+    'lambda':        5.0,   # (dimensionless) learning rate for causal updates
+    'alpha':         0.0,   # relative learning rate for acausal firing
+    'tau_tr_pre':   10.0,   # time constant of presynaptic trace (ms)
+    'tau_tr_post':  10.0,   # time constant of postsynaptic trace (ms)
+    'mu_plus':       0.0,   # weight dependence exponent for causal updates
+    'mu_minus':      0.0,   # weight dependence exponent for causal updates    
+    'Wmax':       500.0,    # maximum absolute value of synaptic weight (pA)
+    'Wmin':          0.0,   # minimum absolute value of synaptic weight (pA) 
 })
 
 # connect pre neuron and post neuron with the STDP synapse
@@ -89,4 +91,4 @@ plt.xlabel('time (ms)')
 plt.ylabel('membrane potential (mV)')
 plt.xlim(0,1400)
 plt.ylim(-10,18)
-plt.savefig('./figures/inhibitory_plasticity.pdf')
+plt.savefig('./figures/std_synapse_test.pdf')
