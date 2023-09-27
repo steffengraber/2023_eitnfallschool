@@ -3,15 +3,18 @@ import matplotlib.pyplot as plt                                      # for plott
 from pynestml.frontend.pynestml_frontend import generate_nest_target # NESTML
 import numpy
 
-generate_nest_target(input_path=["../nestml/iaf_psc_exp.nestml",
-                                 "../nestml/stdp_pl_synapse.nestml"],
-                     target_path="./nestml_target",
-                     logging_level='ERROR',
-                     suffix="_nestml",
-                     codegen_opts = {"neuron_synapse_pairs": [{"neuron": "iaf_psc_exp",
-                                                               "synapse": "stdp_pl",
-                                                               "post_ports": ["post_spikes"]}]}
-)    
+def compile_nestml_code():
+    generate_nest_target(input_path=["../nestml/iaf_psc_exp.nestml",
+                                     "../nestml/stdp_pl_synapse.nestml"],
+                         target_path="./nestml_target",
+                         logging_level='ERROR',
+                         suffix="_nestml",
+                         codegen_opts = {"neuron_synapse_pairs": [{"neuron": "iaf_psc_exp",
+                                                                   "synapse": "stdp_pl",
+                                                                   "post_ports": ["post_spikes"]}]}
+    )    
+
+#compile_nestml_code()
 
 # install resulting NESTML module to make models available in NEST
 nest.Install('nestmlmodule') 
@@ -32,8 +35,8 @@ post_neuron=nest.Create(neuron_model_name,2) # create postsynaptic neuron
 
 # configure STDP synapse
 nest.CopyModel(synapse_model_name,"plastic_synapse", {
-    "weight":      100.0,   # initial synaptic weight (pA)
-    "w_0":           1.0,   # reference weight (pA)
+    "weight":     -100.0,   # initial synaptic weight (pA)
+    "w_0":          -1.0,   # reference weight (pA)
     "delay":         0.1,   # spike transmission delay (ms)
     'lambda':       10.0,   # (dimensionless) learning rate for causal updates
     'alpha':         0.1,   # relative learning rate for acausal firing
@@ -60,7 +63,15 @@ multimeter=nest.Create('multimeter',{'record_from': ['V_m'], 'interval': 0.1})
 
 nest.Connect(multimeter, post_neuron)  # connect multimeter to the neuron
 
+# get weight before simulation
+weight_pre_sim = nest.GetConnections(pre_neuron,post_neuron).get('weight')[0]
+
 nest.Simulate(1400.) # run simulation
+
+# get weight after simulation
+weight_post_sim = nest.GetConnections(pre_neuron,post_neuron).get('weight')[0]
+
+print("\nweight (pre sim) = %.2fpA\nweight (post sim) = %.2fpA" % (weight_pre_sim,weight_post_sim))
 
 # read out recording time and voltage from voltmeter
 times=multimeter.get('events')['times']
@@ -73,9 +84,9 @@ plt.plot(pre_spike_times,len(pre_spike_times)*[17.]  ,'b|',ms=12,label='pre spik
 plt.plot(post_spike_times,len(post_spike_times)*[16.],'r|',ms=12,label='post stimulus')
 plt.plot(times,voltage,'k-',lw=2,label='membrane potential')
 plt.hlines(15,0,1600,color='0.6',lw=1,ls='--',label='threshold')
-plt.legend(loc=6,framealpha=1.)
+plt.legend(loc=3,framealpha=1.)
 plt.xlabel('time (ms)')
 plt.ylabel('membrane potential (mV)')
 plt.xlim(0,1400)
-plt.ylim(0,18)
-plt.savefig('./figures/hello_world_plastic_nestml.pdf')
+plt.ylim(-10,18)
+plt.savefig('./figures/inhibitory_plasticity.pdf')

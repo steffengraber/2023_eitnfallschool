@@ -28,8 +28,8 @@ synapse stdp_pl:
     tau_tr_pre  ms   = 15    ms
     tau_tr_post ms   = 30    ms
     mu_plus     real =  0.4
-    w_0         real =  1.0
-
+    w_0         real =  1.0      # reference weights
+                                 # note: sign(w_0)==sign(w)
   equations:
     pre_trace'  = - pre_trace / tau_tr_pre
     post_trace' = - post_trace / tau_tr_post    
@@ -51,10 +51,10 @@ synapse stdp_pl:
     pre_trace += 1
     
     # update for acausal firing (depression)
-    w_ real = w - alpha*lambda * w * post_trace
+    w_ real = w/w_0 - alpha*lambda * w/w_0 * post_trace    
     
     # zero clipping
-    w = max(0.0,w_)  
+    w = max(0.0,w_) * w_0      
     
     # deliver spike to postsynaptic partner
     deliver_spike(w, the_delay)

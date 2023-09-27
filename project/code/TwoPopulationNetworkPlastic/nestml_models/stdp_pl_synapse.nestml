@@ -29,11 +29,11 @@ synapse stdp_pl:
     tau_minus ms   = 30    ms
     mu_plus   real =  0.4
     w_0       real =  1.0
-
+    
   equations:
     pre_trace'  = - pre_trace / tau_plus
     post_trace' = - post_trace / tau_minus    
-
+    
   input:
     pre_spikes <- spike
     post_spikes <- spike
