@@ -43,7 +43,7 @@ nest.CopyModel(synapse_model_name,"plastic_synapse", {
     'tau_tr_post':  10.0,   # time constant of postsynaptic trace (ms)
     'mu_plus':       0.0,   # weight dependence exponent for causal updates
     'mu_minus':      0.0,   # weight dependence exponent for causal updates    
-    'Wmax':       500.0,    # maximum absolute value of synaptic weight (pA)
+    'Wmax':        500.0,    # maximum absolute value of synaptic weight (pA)
     'Wmin':          0.0,   # minimum absolute value of synaptic weight (pA) 
 })
 
