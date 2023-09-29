@@ -170,7 +170,7 @@ class Model:
             pop_all.V_m = random_vm                                                                                                            
         pop_E = pop_all[:self.pars['N_E']]    # population of exitatory neurons
         pop_I = pop_all[self.pars['N_E']:]    # population of inhibitory neurons
-            
+
         # create external Poissonian sources (stimulus)
         poisson = nest.Create('poisson_generator', params = {'rate': self.pars['nu_X']})
 

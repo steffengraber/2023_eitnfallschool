@@ -31,7 +31,7 @@ def run_model():
     model_instance.connect()
 
     ## connectivity at start of simulation
-    subset_size = 2000    ## number of pre- and post-synaptic neurons weights are extracted from
+    subset_size = 1000 #2000    ## number of pre- and post-synaptic neurons weights are extracted from
     pop_pre = model_instance.nodes['pop_E'][:subset_size]
     pop_post = model_instance.nodes['pop_E'][:subset_size]
     C = model_instance.get_connectivity(pop_pre, pop_post, model_instance.pars['data_path'] +  '/' +'connectivity_presim.dat')

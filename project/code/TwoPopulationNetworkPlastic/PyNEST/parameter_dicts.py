@@ -38,7 +38,7 @@ pars['tau_s'] = 2.0    # synaptic time constant (ms)
 pars['stdp_alpha'] = 0.1   # relative magnitude of weight update for acausal firing
 
 ## slightly reducing alpha leads to an unstable dynamics:
-# pars['stdp_alpha'] = 0.05  # relative magnitude of weight update for acausal firing
+#pars['stdp_alpha'] = 0.05 #0.05  # relative magnitude of weight update for acausal firing
 
 pars['stdp_lambda'] = 20.        # magnitude of weight update for causal firing
 pars['stdp_mu_plus'] = 0.4       # weight dependence exponent for causal firing
